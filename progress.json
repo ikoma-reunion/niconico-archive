@@ -1,7 +1,12 @@
 {
   "sm": {
-    "processed_ranges": [],
-    "last_known_id": null
+    "processed_ranges": [
+      [
+        45181430,
+        45181839
+      ]
+    ],
+    "last_known_id": 45181839
   },
   "nm": {
     "processed_ranges": [],

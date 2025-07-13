@@ -194,7 +194,8 @@ class NicoArchiver:
             
             end_id_this_run = current_id
             video_id_full = f"{VIDEO_PREFIX}{current_id}"
-            # logging.info(f"処理中: {video_id_full}")
+            if current_id % 100 == 0:
+                logging.info(f"処理中(n%100): {video_id_full}")
 
             thumbinfo_url = f"{GETTHUMBINFO_API_URL}{video_id_full}"
             # is_binary=False(デフォルト)なので、返り値は str | None

@@ -10,7 +10,7 @@ from typing import overload, Any, Literal
 
 # --- 定数定義 ---
 # 実行時間制限 (分)
-EXECUTION_LIMIT_MINUTES = 3
+EXECUTION_LIMIT_MINUTES =55
 # APIエンドポイント
 LATEST_VIDEO_API_URL = "https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
 GETTHUMBINFO_API_URL = "https://ext.nicovideo.jp/api/getthumbinfo/"

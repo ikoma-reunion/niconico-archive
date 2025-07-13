@@ -1,0 +1,53 @@
+name: NicoNico Video Archiver
+
+on:
+  workflow_dispatch: # 手動実行を許可
+  schedule:
+    - cron: '0 */23 * * *' # 23時間ごとに実行
+
+jobs:
+  archive:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60 # スクリプト内の55分制限 + 予備時間
+
+    steps:
+      - name: Checkout repository with sparse checkout
+        uses: actions/checkout@v4
+        with:
+          # 実行に必要なファイルのみをチェックアウトし、巨大なデータディレクトリをスキップ
+          sparse-checkout: |
+            main.py
+            progress.json
+            requirements.txt
+          sparse-checkout-cone-mode: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run archiver script
+        run: python main.py
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          
+          # sparse-checkoutを無効化し、生成されたファイルもgit addの対象にする
+          git sparse-checkout disable
+          
+          git add .
+          
+          # 変更がある場合のみコミット・プッシュを実行
+          if ! git diff --cached --quiet; then
+            echo "Changes detected. Committing..."
+            git commit -m "chore(data): Update archive data on $(date -u +'%Y-%m-%d')"
+            git push
+          else
+            echo "No changes to commit."
+          fi

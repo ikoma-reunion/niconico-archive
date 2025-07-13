@@ -10,7 +10,7 @@ from typing import overload, Any, Literal
 
 # --- 定数定義 ---
 # 実行時間制限 (分)
-EXECUTION_LIMIT_MINUTES = 55
+EXECUTION_LIMIT_MINUTES = 3
 # APIエンドポイント
 LATEST_VIDEO_API_URL = "https://snapshot.search.nicovideo.jp/api/v2/snapshot/video/contents/search"
 GETTHUMBINFO_API_URL = "https://ext.nicovideo.jp/api/getthumbinfo/"
@@ -23,7 +23,7 @@ VIDEO_PREFIX = "sm"
 # 最も古い動画ID (これより小さいIDはスキップ)
 OLDEST_VIDEO_ID = 9
 # リクエスト間の待機時間 (秒)
-REQUEST_WAIT_SECONDS = 0.1
+REQUEST_WAIT_SECONDS = 0.02
 # APIリクエストのリトライ設定
 RETRY_COUNT = 5
 RETRY_WAIT_SECONDS = 10

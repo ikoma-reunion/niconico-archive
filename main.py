@@ -23,7 +23,7 @@ VIDEO_PREFIX = "sm"
 # 最も古い動画ID (これより小さいIDはスキップ)
 OLDEST_VIDEO_ID = 9
 # リクエスト間の待機時間 (秒)
-REQUEST_WAIT_SECONDS = 0.02
+REQUEST_WAIT_SECONDS = 0
 # APIリクエストのリトライ設定
 RETRY_COUNT = 5
 RETRY_WAIT_SECONDS = 10

@@ -217,14 +217,24 @@ class NicoArchiver:
                         user_id = root.findtext(".//user_id")
 
                         if thumb_url:
-                            # is_binary=Trueなので、返り値は bytes | None
-                            thumb_img = self._fetch_with_retry(thumb_url, is_binary=True)
+                            thumb_img = None
+                            # URLの末尾が.Lでない場合、まず.L付き(大きいサムネイル)の取得を試みる
+                            if not thumb_url.endswith('.L'):
+                                large_thumb_url = thumb_url + '.L'
+                                thumb_img = self._fetch_with_retry(large_thumb_url, is_binary=True)
+
+                            # .L付きの取得に失敗した場合、または元々.L付きだった場合に、元のURLで取得
+                            if thumb_img is None:
+                                thumb_img = self._fetch_with_retry(thumb_url, is_binary=True)
+
+                            # 最終的に画像が取得できていれば保存
                             if thumb_img:
                                 thumb_path = self._get_path_for_id(VIDEO_PREFIX, current_id, "jpg")
-                                # thumb_imgはbytes型なのでエラーにならない
                                 with open(thumb_path, "wb") as f:
                                     f.write(thumb_img)
-                        
+                            else:
+                                logging.warning(f"{video_id_full} のサムネイル画像の取得に失敗しました。")
+                                
                         if user_icon_url and user_id and "defaults" not in user_icon_url:
                             # is_binary=Trueなので、返り値は bytes | None
                             icon_img = self._fetch_with_retry(user_icon_url, is_binary=True)

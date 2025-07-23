@@ -158,6 +158,7 @@ class NicoArchiver:
             logging.error("最新IDが取得できなかったため、処理を終了します。")
             return
 
+        latest_id = latest_id - 10000
         self.progress_data[VIDEO_PREFIX]["last_known_id"] = latest_id
         
         processed_ranges = self._merge_ranges(self.progress_data[VIDEO_PREFIX]["processed_ranges"])
@@ -241,7 +242,8 @@ class NicoArchiver:
                                     f.write(thumb_img)
                             else:
                                 logging.warning(f"{video_id_full} のサムネイル画像の取得に失敗しました。")
-                                
+                        
+                        """ iconの保存は容量の都合上つらい
                         if user_icon_url and user_id and "defaults" not in user_icon_url:
                             # is_binary=Trueなので、返り値は bytes | None
                             icon_img = self._fetch_with_retry(user_icon_url, is_binary=True)
@@ -251,6 +253,8 @@ class NicoArchiver:
                                 # icon_imgはbytes型なのでエラーにならない
                                 with open(icon_path, "wb") as f:
                                     f.write(icon_img)
+                        """
+                        
                 except etree.XMLSyntaxError:
                     logging.warning(f"{video_id_full} のXMLパースに失敗しました。")
 
